@@ -24,7 +24,7 @@ class DateHelper {
 		return new Date(
 					...texto
 					.split("-")
-					.map((item, indice) => indice == 1 ? item - 1 : item)); //utilizando programação funcional
+					.map((item, indice) => indice == 1 ? item - 1 : item)); //utilizando programação funcional(pode omitir os parenteses se tiver apenas um item, tbm pode omitir a palavra return e as chaves se tiver apenas uma instrução)
 										//indice é 1? se sim retorna item - 1, senão retorna item
 
 		//let dataString = '17-05-2016';
