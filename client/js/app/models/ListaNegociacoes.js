@@ -1,13 +1,11 @@
 class ListaNegociacoes{
 
-	constructor(armadilha){ //recebendo o contexto do NegociacaoController e uma função
+	constructor(){
 		this._negociacoes = [];
-		this._armadilha = armadilha;
 	}
 
 	adiciona(negociacao){
 		this._negociacoes.push(negociacao);
-		this._armadilha(this);
 		//Reflect.apply(this._armadilha, this._contexto, [this]); //usando reflection para trocar o contexto da função presente no NegociacaoController, que seria o da ListaNegociacao mas agora passa a ser o da NegociacaoController mesmo.
 					//ordem construtor Reflect.Apply(função, contexto da função, parametros no construtor da função):
 					//função que quer chamar, 
@@ -17,8 +15,6 @@ class ListaNegociacoes{
 
 	esvazia(){
 		this._negociacoes = [];
-		this._armadilha(this);
-		//Reflect.apply(this._armadilha, this._contexto, [this]);
 	}
 
 	get negociacoes(){

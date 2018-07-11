@@ -2,13 +2,28 @@ class NegociacaoController {
 
 	constructor(){
 		let $ = document.querySelector.bind(document); //bind para manter o contexto do document
+		let self = this;
 
 		this._inputData = $("#data");
 		this._inputQuantidade = $("#quantidade");
 		this._inputValor = $("#valor");
-		this._listaNegociacoes = new ListaNegociacoes(model =>	//o this na arrow function é léxico, então ele continua a se referir ao NegociacaoController
-											this._negociacoesView.update(this._listaNegociacoes));
 
+		this._listaNegociacoes = new Proxy(new ListaNegociacoes(),{
+            get (target, prop, receiver) {
+                if(["adiciona", "esvazia"].includes(prop) && typeof(target[prop]) == typeof(Function)){
+                	return function(){
+	                    console.log(`a propriedade "${prop}" foi interceptada`);
+	                    Reflect.apply(target[prop], target, arguments);
+	                    self._negociacoesView.update(target);
+	                }
+                }
+
+                return Reflect.get(target, prop, receiver);
+            }
+        });
+		/*this._listaNegociacoes = new ListaNegociacoes(model =>	//o this na arrow function é léxico, então ele continua a se referir ao NegociacaoController
+											this._negociacoesView.update(this._listaNegociacoes));
+		*/
 		//aqui é como teria que fazer com uma função normal ao invés de arrow function
 		//this._listaNegociacoes = new ListaNegociacoes(this, function (model) { //cria uma função junto que irá atualizar a View(tabela)
 		//	this._negociacoesView.update(this._listaNegociacoes);		//a function tem this dinamico, então este this sem utilizar o Reflect
@@ -26,21 +41,17 @@ class NegociacaoController {
 	adiciona(event){
 		event.preventDefault();			
 
-		this._listaNegociacoes.adiciona(this._criaNegociacao());			
-		this._negociacoesView.update(this._listaNegociacoes);
+		this._listaNegociacoes.adiciona(this._criaNegociacao());
 
 		this._mensagem.texto = "Negociação adicionada com sucesso";	
 		this._mensagemView.update(this._mensagem);
 
 		this._limpaFormulario();
-
-		//console.log(this._listaNegociacoes.negociacoes);
 		
 	}
 
 	apaga(){
 		this._listaNegociacoes.esvazia();
-		this._negociacoesView.update(this._listaNegociacoes);
 
 		this._mensagem.texto = "Negociações apagadas com sucesso";	
 		this._mensagemView.update(this._mensagem);
