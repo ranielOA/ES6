@@ -35,7 +35,7 @@ class NegociacoesView extends View{
 	        	<td colspan="3"></td>
 	        	<td>
 	        		${
-        				model.negociacoes.reduce((total, n) => total+=n.volume, 0.0) //função reduce para ir somando o volume, junto com programação funcional
+        				model.volumeTotal
 	        		}
 	        	</td>
 	        </tfoot>

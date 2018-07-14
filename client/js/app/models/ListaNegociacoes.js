@@ -22,4 +22,8 @@ class ListaNegociacoes{
 											 //que outras classes possam ter acesso a lista interna
 		
 	}
+
+	get volumeTotal(){
+		return this._negociacoes.reduce((total, n) => total + n.volume, 0.0); //função reduce para ir somando o volume
+	}
 }
